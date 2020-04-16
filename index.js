@@ -4,9 +4,12 @@ const dotenv = require('dotenv')
 const app = express();
 const cookieParser = require('cookie-parser')
 const connectDB = require('./config/db');
+const io = require('socket.io');
 
 //Import routes
 const authRoute = require('./routes/auth')
+const reservationRoute = require('./routes/reservation')
+
 
 dotenv.config({ path: './config/config.env' });
 
@@ -28,9 +31,13 @@ app.use((req,res,next)=> {
 
 //Route Middlewares
 app.use('/api/user',authRoute)
+app.use('/api/reservations',reservationRoute)
 
 
-app.listen(5000,() => console.log('Server started on 5000'))
+
+app.listen(4000,() => console.log('Server started on 5000'))
+
+
 
 // Handle unhandled promise rejection
 process.on('unhandledRejection', (err, promise) => {
