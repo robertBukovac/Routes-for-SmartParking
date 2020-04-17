@@ -4,7 +4,10 @@ const asyncHandler = require('../middleware/async');
 
 const {
     addReservation,
-    getReservation
+    getReservation,
+    getReservations,
+    updateReservation,
+    deleteReservation
 
 } = require('../controllers/reservations');
 
@@ -16,9 +19,14 @@ const { protect } = require('../middleware/auth');
 
 
 router
-  .route('/').post(protect,addReservation);
+  .route('/').post(protect,addReservation)
+  .get(getReservations);
 
 router
-  .route('/:id').get(getReservation);
+  .route('/:id')
+  .get(getReservation)
+  .put(protect,updateReservation)
+  .delete(protect,deleteReservation)
+
 
   module.exports = router;
