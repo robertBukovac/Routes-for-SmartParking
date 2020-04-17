@@ -8,7 +8,10 @@ const Reservation = require('../model/Reservation');
 // @acces Public
 exports.getReservations = asyncHandler(async (req, res, next) => {
 
-    const reservations = await Reservation.find();
+    const reservations = await Reservation.find().populate({
+      path: 'user',
+      select: 'name email',
+    });
 
     res.status(200).json({success: true, data: reservations})
 });
