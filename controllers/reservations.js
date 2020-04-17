@@ -27,6 +27,7 @@ exports.getReservation = asyncHandler(async (req, res, next) => {
         404
       );
     }
+
     res.status(200).json({
       sucess: true,
       data: reservation,
@@ -48,10 +49,11 @@ exports.addReservation = asyncHandler(async (req, res, next) => {
     });
 
 // @desc Update parking reservation
-// @route POST /api/reservations
+// @route PUT /api/reservations/:id
 // @acces Private
 
 exports.updateReservation = asyncHandler(async (req, res, next) => {
+
   let reservation = await Reservation.findById(req.params.id)
 
   if(!reservation){
@@ -72,11 +74,12 @@ exports.updateReservation = asyncHandler(async (req, res, next) => {
 
   });
 
-// @desc Update parking reservation
-// @route POST /api/reservations
+// @desc Delete parking reservation
+// @route Delete /api/reservations/:id
 // @acces Private
 
 exports.deleteReservation = asyncHandler(async (req, res, next) => {
+  
   const reservation = await Reservation.findById(req.params.id)
 
   if(!reservation){
