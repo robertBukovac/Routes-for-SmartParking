@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 const ReservationSchema = new mongoose.Schema({
   parking: {
     type: String,
@@ -22,13 +23,14 @@ const ReservationSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  }
-});
+  //createdAt: {
+  //  type: Date,
+  //  default: Date.now,
+  //  },
+ 
+   } );
 
 
-
-
+ReservationSchema.set('timestamps', true);
+//ReservationSchema.plugin(timeZone, { paths: ['createdAt'] });
 module.exports = mongoose.model('Reservation', ReservationSchema);
