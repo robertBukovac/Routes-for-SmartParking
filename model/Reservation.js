@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const timeZone = require('mongoose-timezone');
 
 
 const ReservationSchema = new mongoose.Schema({
@@ -31,4 +32,6 @@ const ReservationSchema = new mongoose.Schema({
    } );
 
 
+
+ReservationSchema.plugin(timeZone, { path: ['createdAt'] });
 module.exports = mongoose.model('Reservation', ReservationSchema);
