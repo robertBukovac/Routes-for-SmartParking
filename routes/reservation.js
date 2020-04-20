@@ -20,7 +20,7 @@ const { protect,authorize } = require('../middleware/auth');
 
 router
   .route('/').post(protect,addReservation)
-  .get(protect,authorize('admin','bobi'),getReservations);
+  .get(protect,authorize('admin'),getReservations);
 
 router
   .route('/:id')
