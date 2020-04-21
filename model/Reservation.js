@@ -29,8 +29,20 @@ const ReservationSchema = new mongoose.Schema({
     default: Date.now,
     },
  
+   },{
+     toJSON:{
+        virtuals:true,
+        toObject: { virtuals:true}
+     }
    } );
 
+// Reverse populate with virtuals
+ReservationSchema.virtual('users',{
+  ref:'User',
+  localField:'_id',
+  foreignField: 'reservation',
+  justOne: false
+})
 
 
 ReservationSchema.plugin(timeZone, { path: ['createdAt'] });

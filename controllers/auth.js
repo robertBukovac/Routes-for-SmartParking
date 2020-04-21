@@ -16,7 +16,7 @@ exports.register = asyncHandler(async (req, res, next) => {
       password,
       role,
     });
-  
+    
     sendTokenResponse(user, 200, res);
   });
 
@@ -45,7 +45,7 @@ exports.login = asyncHandler(async (req, res, next) => {
     if (!isMatch) {
       return next(new ErrorResponse('Invalid credentials', 401));
     }
-
+    
     sendTokenResponse(user, 200, res);
   });
 

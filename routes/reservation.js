@@ -11,9 +11,11 @@ const {
 
 } = require('../controllers/reservations');
 
+
 const router = express.Router();
 
 const Reservation = require('../model/Reservation');
+const User = require('../model/User')
 
 const advancedResults = require('../middleware/advancedResults');
 const { protect,authorize } = require('../middleware/auth');
@@ -21,7 +23,7 @@ const { protect,authorize } = require('../middleware/auth');
 
 router
   .route('/').post(protect,addReservation)
-  .get(protect,authorize('admin'),advancedResults(Reservation),getReservations);
+  .get(protect,authorize('admin'),advancedResults(Reservation,'user'),getReservations);
 
 router
   .route('/:id')
