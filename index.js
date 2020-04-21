@@ -11,7 +11,8 @@ const authRoute = require('./routes/auth')
 const reservationRoute = require('./routes/reservation')
 
 
-dotenv.config({ path: './config/config.env' });
+dotenv.config({ path: './config/config.env' }
+);
 
 connectDB();
 

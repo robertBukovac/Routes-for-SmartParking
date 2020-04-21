@@ -13,7 +13,7 @@ exports.getReservations = asyncHandler(async (req, res, next) => {
       select: 'name email',
     });
 
-    res.status(200).json({success: true, data: reservations})
+    res.status(200).json(res.advancedResults)
 });
 
   

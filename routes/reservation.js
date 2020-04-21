@@ -15,12 +15,13 @@ const router = express.Router();
 
 const Reservation = require('../model/Reservation');
 
+const advancedResults = require('../middleware/advancedResults');
 const { protect,authorize } = require('../middleware/auth');
 
 
 router
   .route('/').post(protect,addReservation)
-  .get(protect,authorize('admin'),getReservations);
+  .get(protect,authorize('admin'),advancedResults(Reservation),getReservations);
 
 router
   .route('/:id')
