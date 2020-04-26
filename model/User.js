@@ -56,5 +56,13 @@ UserSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
+// Reverse populate with virtuals
+UserSchema.virtual('reservations',{
+  ref:'Reservation',
+  localField:'_id',
+  foreignField: 'user',
+  justOne: false
+})
+
 
   module.exports = mongoose.model('User', UserSchema);

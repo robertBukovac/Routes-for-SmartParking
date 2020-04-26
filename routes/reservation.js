@@ -7,7 +7,8 @@ const {
     getReservation,
     getReservations,
     updateReservation,
-    deleteReservation
+    deleteReservation,
+    getUsersReservation
 
 } = require('../controllers/reservations');
 
@@ -31,5 +32,6 @@ router
   .put(protect,updateReservation)
   .delete(protect,deleteReservation)
 
+// router.route('/me').get(getUsersReservation)
 
   module.exports = router;

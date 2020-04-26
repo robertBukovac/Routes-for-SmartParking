@@ -96,4 +96,3 @@ exports.deleteReservation = asyncHandler(async (req, res, next) => {
   res.status(201).json({sucess:true,data:{}})
 
   });
-

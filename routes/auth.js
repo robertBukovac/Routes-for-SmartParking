@@ -6,7 +6,8 @@ const User = require('../model/User')
  const {
    register,
    login,
-   getMe
+   getMe,
+   getUsersReservation
  } = require('../controllers/auth');
  
  const router = express.Router();
@@ -16,5 +17,5 @@ const User = require('../model/User')
  router.post('/register', register);
  router.post('/login', login);
  router.get('/me', protect, getMe);
-
+router.get('/myreserv',protect,getUsersReservation)
 module.exports = router

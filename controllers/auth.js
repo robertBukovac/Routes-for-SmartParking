@@ -1,6 +1,8 @@
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const User = require('../model/User');
+const Reservation = require('../model/Reservation');
+
 
 // @desc Register User
 // @route POST /api/auth/register
@@ -55,11 +57,33 @@ exports.login = asyncHandler(async (req, res, next) => {
 // @acces Private
 
 exports.getMe = asyncHandler(async (req, res, next) => {
-    const user = await User.findById(req.user.id);
-    
+    const user = await User.findById(req.user.id).populate({
+      path: 'reservation',
+      select: 'parking time',
+    });
+  
+
     res.status(200).json({ success: true, data: user });
   });
+
+
+// @desc Get current logged in users reservation
+// @route get /api/user/myreservations
+// @acces Private
+
+exports.getUsersReservation = asyncHandler(async (req, res, next) => {
   
+  const reservation = await Reservation.find();
+  //console.log(req.user.id)
+
+  let myReservations = reservation.filter(data => req.user.id == data.user )
+
+  console.log(myReservations)
+  res.status(201).json({sucess:true,data:myReservations})
+
+  });
+
+
   // Get token from model,create cookie and send response 
 const sendTokenResponse = (user,statusCode,res) => {
     // Create token
