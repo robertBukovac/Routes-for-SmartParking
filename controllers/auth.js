@@ -76,7 +76,14 @@ exports.getUsersReservation = asyncHandler(async (req, res, next) => {
   const reservation = await Reservation.find();
   //console.log(req.user.id)
 
-  let myReservations = reservation.filter(data => req.user.id == data.user )
+  const myReservations = reservation.filter(data => req.user.id == data.user )
+  
+  if (myReservations.length < 1) {
+    return next(
+      new ErrorResponse(`You don't have any reservations`),
+      404
+    );
+  }
 
   console.log(myReservations)
   res.status(201).json({sucess:true,data:myReservations})
