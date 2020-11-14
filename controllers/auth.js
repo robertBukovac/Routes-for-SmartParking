@@ -74,7 +74,6 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 exports.getUsersReservation = asyncHandler(async (req, res, next) => {
   
   const reservation = await Reservation.find();
-  //console.log(req.user.id)
 
   const myReservations = reservation.filter(data => req.user.id == data.user )
   
@@ -84,9 +83,24 @@ exports.getUsersReservation = asyncHandler(async (req, res, next) => {
       404
     );
   }
+  /// Middleware for repeated reservations
+  let notDate = []
+  const count = reservation.map(data => data.date)
+  const dates = count.map(date => date.toLocaleDateString())
 
-  console.log(myReservations)
-  res.status(201).json({sucess:true,data:myReservations})
+  var counts = {};
+  dates.forEach(function(x) { counts[x] = (counts[x] || 0)+1; });
+  console.log(counts)
+
+  const entries = Object.entries(counts)
+  entries.forEach(date => {
+    if(date[1] > 3) {
+      notDate.push(date[0])
+    }
+  })
+  console.log(notDate)
+
+  res.status(201).json({sucess:true,data:myReservations,date:notDate})
 
   });
 
