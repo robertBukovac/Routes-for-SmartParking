@@ -10,6 +10,7 @@ exports.getReservations = asyncHandler(async (req, res, next) => {
 
     const reservations = await Reservation.find();
 
+    if (!reservations)  return next(new ErrorResponse(`No reservations in the system`,404));
     res.status(200).json(res.advancedResults)
 });
 
@@ -23,9 +24,7 @@ exports.getReservation = asyncHandler(async (req, res, next) => {
   
     if (!reservation) {
       return next(
-        new ErrorResponse(`No reservation with id of ${req.params.id}`),
-        404
-      );
+        new ErrorResponse(`No reservation with id of ${req.params.id}`,404));
     }
 
     res.status(200).json({
@@ -40,7 +39,6 @@ exports.getReservation = asyncHandler(async (req, res, next) => {
 // @acces Private
 
 exports.addReservation = asyncHandler(async (req, res, next) => {
-    //da dobijemo trenutno prijavljenog usera i da ga ubacimo u body
     req.body.user = req.user.id; 
  
     const parking = await Reservation.create(req.body);

@@ -29,19 +29,16 @@ exports.register = asyncHandler(async (req, res, next) => {
 exports.login = asyncHandler(async (req, res, next) => {
     const { email, password } = req.body;
   
-    // Validate email & password
     if (!email || !password) {
       return next(
         new ErrorResponse('Please provide an email and a password', 400)
       );
     }
-    //Check for User                 mozemo staviti samo email,jer je isto ime varijable
+    
     const user = await User.findOne({ email: email }).select('+password');
     if (!user) {
       return next(new ErrorResponse('Invalid credentials', 401));
     }
-  
-    //Check if password matches
     const isMatch = await user.matchPassword(password);
   
     if (!isMatch) {
@@ -62,6 +59,10 @@ exports.getMe = asyncHandler(async (req, res, next) => {
       select: 'parking time',
     });
   
+    if(!user){
+      return next(
+        new ErrorResponse(`No user with id of ${req.user.id}`,404)) 
+    }
 
     res.status(200).json({ success: true, data: user });
   });
@@ -74,21 +75,17 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 exports.getUsersReservation = asyncHandler(async (req, res, next) => {
   
   const reservation = await Reservation.find();
-
   const myReservations = reservation.filter(data => req.user.id == data.user )
   
   if (myReservations.length < 1) {
-    return next(
-      new ErrorResponse(`You don't have any reservations`),
-      404
-    );
-  }
+    return next(new ErrorResponse(`You don't have any reservations`,404));}
+
   /// Middleware for repeated reservations
   let notDate = []
   const count = reservation.map(data => data.date)
   const dates = count.map(date => date.toLocaleDateString())
 
-  var counts = {};
+  let counts = {};
   dates.forEach(function(x) { counts[x] = (counts[x] || 0)+1; });
   console.log(counts)
 
@@ -98,8 +95,6 @@ exports.getUsersReservation = asyncHandler(async (req, res, next) => {
       notDate.push(date[0])
     }
   })
-  console.log(notDate)
-
   res.status(201).json({sucess:true,data:myReservations,date:notDate})
 
   });
@@ -107,15 +102,11 @@ exports.getUsersReservation = asyncHandler(async (req, res, next) => {
 
   // Get token from model,create cookie and send response 
 const sendTokenResponse = (user,statusCode,res) => {
-    // Create token
     const token = user.getSignedJWToken()
-    
     const options = {
       // 30 days
       expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE *24 *60 *60 *1000),
       httpOnly:true
-    }
-    // KADA APLIKACIJA ISLA ZA PRODUKCIJU OKRENUTI DA COOKIE BUDU SECURE (https valid)
-    
+    }    
     res.status(statusCode).cookie('token',token,options).json({succes:true,token})
   }
